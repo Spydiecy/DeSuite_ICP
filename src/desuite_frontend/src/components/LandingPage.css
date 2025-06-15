@@ -1,0 +1,21 @@
+
+.duotone-effect {
+    position: relative;
+  }
+  
+  .duotone-effect::before {
+    content: '';
+    display: block;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    pointer-events: none;
+    mix-blend-mode: hard-light;
+    background: linear-gradient(to bottom right, rgba(255, 204, 0, 0.5), rgba(0, 0, 0, 0.5));
+  }
+  
+  .image-filter {
+    filter: brightness(0.8) contrast(1.2) saturate(0.8) hue-rotate(10deg);
+  }

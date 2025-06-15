@@ -1,0 +1,60 @@
+{
+  "canisters": {
+    "desuite_backend": {
+      "main": "src/desuite_backend/main.mo",
+      "type": "motoko"
+    },
+    "file_management": {
+      "main": "src/file_management/main.mo",
+      "type": "motoko"
+    },
+    "notes": {
+      "main": "src/notes/main.mo",
+      "type": "motoko"
+    },
+    "photo_gallery": {
+      "main": "src/photo_gallery/main.mo",
+      "type": "motoko"
+    },
+    "task_manager": {
+      "main": "src/task_manager/main.mo",
+      "type": "motoko"
+    },
+    "calendar_manager": {
+      "main": "src/calendar_manager/main.mo",
+      "type": "motoko"
+    },
+    "expense_tracker": {
+      "main": "src/expense_tracker/main.mo",
+      "type": "motoko"
+    },
+    "desuite_frontend": {
+      "dependencies": [
+        "desuite_backend",
+        "file_management",
+        "notes",
+        "photo_gallery",
+        "task_manager",
+        "calendar_manager",
+        "expense_tracker"
+      ],
+      "frontend": {
+        "entrypoint": "src/desuite_frontend/src/index.html"
+      },
+      "source": [
+        "src/desuite_frontend/assets",
+        "src/desuite_frontend/src",
+        "dist/desuite_frontend/"
+      ],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}

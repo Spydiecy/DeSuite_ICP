@@ -1,0 +1,23 @@
+{
+  "calendar_manager": {
+    "ic": "7hpqf-2iaaa-aaaam-adiwa-cai"
+  },
+  "desuite_backend": {
+    "ic": "7jn5n-byaaa-aaaam-adixa-cai"
+  },
+  "desuite_frontend": {
+    "ic": "5trvr-7iaaa-aaaam-adiya-cai"
+  },
+  "file_management": {
+    "ic": "5uqtf-sqaaa-aaaam-adiyq-cai"
+  },
+  "notes": {
+    "ic": "52s6n-jaaaa-aaaam-adizq-cai"
+  },
+  "photo_gallery": {
+    "ic": "5pvpa-iiaaa-aaaam-adi2a-cai"
+  },
+  "task_manager": {
+    "ic": "5bxci-tyaaa-aaaam-adi3a-cai"
+  }
+}

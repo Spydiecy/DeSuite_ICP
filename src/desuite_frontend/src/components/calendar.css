@@ -1,0 +1,62 @@
+.rbc-calendar {
+  background-color: #1F2937;
+  color: #ffffff;
+}
+
+.rbc-toolbar button {
+  color: #ffffff;
+}
+
+.rbc-toolbar button:hover {
+  background-color: #4B5563;
+}
+
+.rbc-toolbar button:active, .rbc-toolbar button.rbc-active {
+  background-color: #6B7280;
+}
+
+.rbc-month-view, .rbc-time-view, .rbc-agenda-view {
+  border-color: #4B5563;
+}
+
+.rbc-header {
+  background-color: #374151;
+  border-color: #4B5563;
+}
+
+.rbc-off-range-bg {
+  background-color: #2D3748;
+}
+
+.rbc-today {
+  background-color: #3B4252;
+}
+
+.rbc-event {
+  border: none;
+}
+
+.rbc-show-more {
+  background-color: rgba(0, 0, 0, 0.3);
+  color: #ffffff;
+}
+
+.rbc-time-content {
+  border-color: #4B5563;
+}
+
+.rbc-time-header-content {
+  border-color: #4B5563;
+}
+
+.rbc-timeslot-group {
+  border-color: #4B5563;
+}
+
+.rbc-day-slot .rbc-time-slot {
+  border-color: #4B5563;
+}
+
+.rbc-current-time-indicator {
+  background-color: #ECC94B;
+}

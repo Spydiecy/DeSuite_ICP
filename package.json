@@ -1,0 +1,26 @@
+{
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
+  },
+  "name": "desuite",
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "prebuild": "npm run prebuild --workspaces --if-present",
+    "pretest": "npm run prebuild --workspaces --if-present",
+    "start": "npm start --workspaces --if-present",
+    "test": "npm test --workspaces --if-present"
+  },
+  "type": "module",
+  "workspaces": [
+    "src/desuite_frontend"
+  ],
+  "dependencies": {
+    "framer-motion": "^11.11.1",
+    "lucide-react": "^0.447.0",
+    "moment": "^2.30.1",
+    "react-big-calendar": "^1.15.0",
+    "react-hot-toast": "^2.4.1",
+    "recharts": "^2.12.7"
+  }
+}
