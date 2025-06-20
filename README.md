@@ -1,4 +1,4 @@
-# DfinityGuard
+# DeSuite
 
 ## Your Decentralized Personal Productivity Suite
 
