@@ -4,6 +4,7 @@ import { User } from '../../../declarations/desuite_backend/desuite_backend.did'
 import { desuite_backend } from '../../../declarations/desuite_backend';
 import { file_management } from '../../../declarations/file_management';
 import { notes } from '../../../declarations/notes';
+// import { word_editor } from '../../../declarations/word_editor';
 import { task_manager } from '../../../declarations/task_manager';
 import { photo_gallery } from '../../../declarations/photo_gallery';
 import { expense_tracker } from '../../../declarations/expense_tracker';
@@ -14,6 +15,7 @@ import TaskManager from './TaskManager';
 import Settings from './Settings';
 import Calendar from './Calendar';
 import ExpenseTracker from './ExpenseTracker';
+import WordEditor from './WordEditor';
 import ConfirmationModal from './ConfirmationModal';
 import { 
   UserCircle, 
@@ -36,7 +38,7 @@ const Dashboard: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [countsLoading, setCountsLoading] = useState(true);
-  const [activeSection, setActiveSection] = useState<'overview' | 'files' | 'notes' | 'photos' | 'tasks' | 'calendar' | 'expenses' | 'security' | 'settings'>('overview');
+  const [activeSection, setActiveSection] = useState<'overview' | 'files' | 'notes' | 'photos' | 'tasks' | 'calendar' | 'expenses' | 'wordEditor' | 'security' | 'settings'>('overview');
   const [fileCount, setFileCount] = useState(0);
   const [noteCount, setNoteCount] = useState(0);
   const [photoCount, setPhotoCount] = useState(0);
@@ -133,6 +135,7 @@ const Dashboard: React.FC = () => {
   };
 
   const handleQuickAction = async (action: string) => {
+    console.log(action)
     switch (action) {
       case 'New Note':
         setActiveSection('notes');
@@ -190,6 +193,7 @@ const Dashboard: React.FC = () => {
     { icon: CheckCircle, label: 'Tasks', section: 'tasks' },
     { icon: CalendarIcon, label: 'Calendar', section: 'calendar' },
     { icon: DollarSign, label: 'Expenses', section: 'expenses' },
+    { icon: FileText, label: 'Word Editor', section: 'wordEditor' },
     { icon: ShieldCheck, label: 'Security', section: 'security' },
     { icon: SettingsIcon, label: 'Settings', section: 'settings' },
   ];
@@ -352,6 +356,7 @@ const Dashboard: React.FC = () => {
         {activeSection === 'tasks' && <TaskManager />}
         {activeSection === 'calendar' && <Calendar />}
         {activeSection === 'expenses' && <ExpenseTracker />}
+        {activeSection === 'wordEditor' && <WordEditor />}
         {activeSection === 'security' && (
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
             <h2 className="text-lg font-semibold mb-4">Security Settings</h2>

@@ -1,0 +1,369 @@
+/* Variables */
+:root {
+	--background: #1e1e1e;
+	--background-focused: #2d2d2d;
+	--editor-background: #2d2d2d;
+	--page-background: #ffffff;
+	--purple-light: #f3f0ff;
+	--black: #1a1a1a;
+	--white: #ffffff;
+	--gray-2: #2e2e2e;
+	--gray-3: #3e3e3e;
+
+	/* Page sizes (in px at 96 DPI) */
+	--page-width-a4: 794px;
+	/* 210mm */
+	--page-height-a4: 1123px;
+	/* 297mm */
+	--page-width-letter: 816px;
+	/* 8.5in */
+	--page-height-letter: 1056px;
+	/* 11in */
+
+	/* Page margins */
+	--page-margin: 1in;
+}
+
+/* Main editor wrapper */
+.word-editor {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	background: transparent;
+}
+
+/* Editor main content area */
+.editor-main {
+	flex: 1;
+	overflow-y: auto;
+	position: relative;
+	padding: 2rem;
+	background: transparent;
+}
+
+.editor-main::-webkit-scrollbar {
+	width: 12px;
+}
+
+.editor-main::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.editor-main::-webkit-scrollbar-thumb {
+	background-color: var(--gray-3);
+	border-radius: 6px;
+	border: 3px solid var(--background);
+}
+
+/* Page container */
+.page-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 2rem;
+	background: transparent;
+}
+
+/* Page styles */
+.page.ProseMirror {
+	background: var(--page-background);
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+	margin: 0 auto;
+	position: relative;
+	padding: var(--page-margin);
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+}
+
+/* Page scrollbar */
+.page.ProseMirror::-webkit-scrollbar {
+	width: 8px;
+}
+
+.page.ProseMirror::-webkit-scrollbar-track {
+	background: var(--page-background);
+}
+
+.page.ProseMirror::-webkit-scrollbar-thumb {
+	background-color: var(--gray-2);
+	border-radius: 4px;
+	border: 2px solid var(--page-background);
+}
+
+/* Page sizes */
+.page.a4 {
+	width: var(--page-width-a4);
+	height: var(--page-height-a4);
+}
+
+.page.letter {
+	width: var(--page-width-letter);
+	height: var(--page-height-letter);
+}
+
+/* Page orientations */
+.page.landscape.a4 {
+	width: var(--page-height-a4);
+	height: var(--page-width-a4);
+}
+
+.page.landscape.letter {
+	width: var(--page-height-letter);
+	height: var(--page-width-letter);
+}
+
+/* Toolbar styles */
+.control-group {
+	position: sticky;
+	top: 0;
+	z-index: 100;
+	padding: 0.5rem;
+	background: var(--background-focused);
+	border-radius: 0.5rem;
+	margin-bottom: 1rem;
+}
+
+.button-group {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	align-items: center;
+}
+
+.button-group button {
+	border: 1px solid var(--gray-2);
+	background: var(--background);
+	border-radius: 0.25rem;
+	padding: 0.5rem 0.75rem;
+	font-size: 0.875rem;
+	color: var(--white);
+	cursor: pointer;
+	transition: all 0.2s;
+	height: 36px;
+	display: flex;
+	align-items: center;
+}
+
+.button-group button:hover {
+	background: var(--background-focused);
+}
+
+.button-group button.is-active {
+	background: var(--purple-light);
+	color: var(--black);
+}
+
+.button-group button:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+/* Buttons with alignment icons */
+.button-group button[data-alignment] {
+	min-width: 40px;
+	justify-content: center;
+}
+
+/* Dropdown styling */
+.button-group select {
+	background: var(--background);
+	color: var(--white);
+	border: 1px solid var(--gray-2);
+	border-radius: 0.25rem;
+	padding: 0.5rem;
+	font-size: 0.875rem;
+	cursor: pointer;
+	height: 36px;
+}
+
+.button-group select:focus {
+	outline: none;
+	border-color: var(--purple-light);
+}
+
+.button-group select option {
+	background: var(--background);
+	color: var(--white);
+}
+
+/* Editor content styles */
+.ProseMirror {
+	color: var(--black);
+	outline: none;
+}
+
+.ProseMirror:focus {
+	outline: none;
+}
+
+.ProseMirror>*+* {
+	margin-top: 0.75em;
+}
+
+/* Enhanced List styles */
+.ProseMirror ul,
+.ProseMirror ol {
+	padding-left: 1.5em;
+}
+
+.ProseMirror ul {
+	list-style-type: disc;
+}
+
+.ProseMirror ol {
+	list-style-type: decimal;
+}
+
+.ProseMirror li {
+	display: list-item;
+	margin-left: 0.5em;
+}
+
+.ProseMirror li>p {
+	margin: 0;
+}
+
+/* List alignment refinements */
+.ProseMirror [style*="text-align"] ul,
+.ProseMirror [style*="text-align"] ol {
+	padding-left: 0;
+	list-style-position: inside;
+}
+
+.ProseMirror [style*="text-align: center"] ul,
+.ProseMirror [style*="text-align: center"] ol {
+	text-align: center;
+}
+
+.ProseMirror [style*="text-align: right"] ul,
+.ProseMirror [style*="text-align: right"] ol {
+	text-align: right;
+}
+
+.ProseMirror [style*="text-align: justify"] ul,
+.ProseMirror [style*="text-align: justify"] ol {
+	text-align: justify;
+}
+
+/* Block alignment styles */
+.ProseMirror [style*="text-align: center"] {
+	text-align: center !important;
+	justify-content: center !important;
+}
+
+.ProseMirror [style*="text-align: right"] {
+	text-align: right !important;
+	justify-content: flex-end !important;
+}
+
+.ProseMirror [style*="text-align: justify"] {
+	text-align: justify !important;
+}
+
+.ProseMirror [style*="text-align: left"] {
+	text-align: left !important;
+	justify-content: flex-start !important;
+}
+
+/* Heading styles */
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3,
+.ProseMirror h4,
+.ProseMirror h5,
+.ProseMirror h6 {
+	line-height: 1.1;
+	margin-top: 2.5rem;
+	text-wrap: pretty;
+	width: 100%;
+}
+
+.ProseMirror h1,
+.ProseMirror h2 {
+	margin-top: 3.5rem;
+	margin-bottom: 1.5rem;
+}
+
+.ProseMirror h1 {
+	font-size: 1.4rem;
+}
+
+.ProseMirror h2 {
+	font-size: 1.2rem;
+}
+
+.ProseMirror h3 {
+	font-size: 1.1rem;
+}
+
+.ProseMirror h4,
+.ProseMirror h5,
+.ProseMirror h6 {
+	font-size: 1rem;
+}
+
+/* Code and preformatted text styles */
+.ProseMirror code {
+	background-color: var(--purple-light);
+	border-radius: 0.4rem;
+	color: var(--black);
+	font-size: 0.85rem;
+	padding: 0.25em 0.3em;
+	font-family: 'JetBrainsMono', monospace;
+}
+
+.ProseMirror pre {
+	background: var(--black);
+	border-radius: 0.5rem;
+	color: var(--white);
+	font-family: 'JetBrainsMono', monospace;
+	margin: 1.5rem 0;
+	padding: 0.75rem 1rem;
+	overflow-x: auto;
+	width: 100%;
+}
+
+.ProseMirror pre code {
+	background: none;
+	color: inherit;
+	font-size: 0.8rem;
+	padding: 0;
+}
+
+/* Blockquote styles */
+.ProseMirror blockquote {
+	border-left: 3px solid var(--gray-3);
+	margin: 1.5rem 0;
+	padding-left: 1rem;
+	color: var(--gray-3);
+	width: 100%;
+}
+
+/* Horizontal rule styles */
+.ProseMirror hr {
+	border: none;
+	border-top: 1px solid var(--gray-2);
+	margin: 2rem 0;
+	width: 100%;
+}
+
+/* Selection styles */
+.ProseMirror ::selection {
+	background: rgba(150, 150, 255, 0.15);
+}
+
+/* Placeholder styles */
+.ProseMirror p.is-editor-empty:first-child::before {
+	color: var(--gray-3);
+	content: attr(data-placeholder);
+	float: left;
+	height: 0;
+	pointer-events: none;
+}
+
+/* Make sure all block elements respect width */
+.ProseMirror p {
+	width: 100%;
+	margin: 0;
+}
