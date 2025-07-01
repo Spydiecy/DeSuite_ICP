@@ -21,7 +21,6 @@
     "@tiptap/pm": "^2.10.0",
     "@tiptap/react": "^2.10.0",
     "@tiptap/starter-kit": "^2.10.0",
-    "@tiptap-pro/extension-export": "^2.16.3",
     "framer-motion": "^11.11.1",
     "lucide-react": "^0.447.0",
     "moment": "^2.30.1",
