@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { file_management } from '../../../declarations/file_management';
 import { 
   CloudArrowUpIcon, 
@@ -8,7 +9,10 @@ import {
   ChevronRightIcon,
   DocumentIcon,
   ExclamationCircleIcon,
-  FolderIcon
+  FolderIcon,
+  PencilSquareIcon,
+  XMarkIcon,
+  CheckIcon
 } from '@heroicons/react/24/outline';
 
 interface File {
@@ -19,11 +23,26 @@ interface File {
   createdAt: bigint;
 }
 
+interface PendingUpload {
+  file: globalThis.File;
+  size: number;
+  isValid: boolean;
+  errorMessage: string | null;  // Changed from string | undefined to string | null
+}
+
 const ITEMS_PER_PAGE = 5;
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 const MAX_STORAGE = 100 * 1024 * 1024; // 100 MB
+const WORD_FILE_TYPES = [
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'text/html',
+  'text/doc',
+  'application/doc'
+];
 
 const FileManagement: React.FC = () => {
+  const navigate = useNavigate();
   const [files, setFiles] = useState<File[]>([]);
   const [uploadingFile, setUploadingFile] = useState<boolean>(false);
   const [storageUsage, setStorageUsage] = useState<bigint>(BigInt(0));
@@ -31,6 +50,7 @@ const FileManagement: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [dragOver, setDragOver] = useState(false);
+  const [pendingUpload, setPendingUpload] = useState<PendingUpload | null>(null);
 
   useEffect(() => {
     fetchFiles();
@@ -66,25 +86,44 @@ const FileManagement: React.FC = () => {
     }
   };
 
-  const handleFileUpload = async (file: globalThis.File) => {
+  const validateFileSize = (file: globalThis.File): string | null => {
     if (file.size > MAX_FILE_SIZE) {
-      setError(`File size exceeds the maximum allowed size of ${MAX_FILE_SIZE / (1024 * 1024)} MB`);
-      return;
+      const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+      const maxSizeMB = (MAX_FILE_SIZE / (1024 * 1024)).toFixed(2);
+      return `This file is too big to be uploaded (${fileSizeMB}MB/${maxSizeMB}MB)`;
     }
-
     if (Number(storageUsage) + file.size > MAX_STORAGE) {
-      setError(`Uploading this file would exceed your storage quota of ${MAX_STORAGE / (1024 * 1024)} MB`);
-      return;
+      const remainingStorage = (MAX_STORAGE - Number(storageUsage)) / (1024 * 1024);
+      return `Not enough storage space. Only ${remainingStorage.toFixed(2)}MB available`;
     }
+    return null;
+  };
 
+  const handleFileSelect = (file: globalThis.File) => {
+    const errorMessage = validateFileSize(file);
+    setPendingUpload({
+      file,
+      size: file.size,
+      isValid: !errorMessage,
+      errorMessage
+    });
+  };
+
+  const confirmUpload = async () => {
+    if (!pendingUpload || !pendingUpload.isValid || uploadingFile) return;
+    
     setUploadingFile(true);
     setError(null);
     try {
-      const arrayBuffer = await file.arrayBuffer();
-      const result = await file_management.uploadFile(file.name, file.type, Array.from(new Uint8Array(arrayBuffer)));
+      const arrayBuffer = await pendingUpload.file.arrayBuffer();
+      const result = await file_management.uploadFile(
+        pendingUpload.file.name,
+        pendingUpload.file.type,
+        Array.from(new Uint8Array(arrayBuffer))
+      );
       if ('ok' in result) {
-        await fetchFiles();
-        await fetchStorageUsage();
+        await Promise.all([fetchFiles(), fetchStorageUsage()]);
+        setPendingUpload(null);
       } else {
         setError(`Error uploading file: ${result.err}`);
       }
@@ -96,13 +135,17 @@ const FileManagement: React.FC = () => {
     }
   };
 
+  const cancelUpload = () => {
+    setPendingUpload(null);
+    setError(null);
+  };
+
   const handleFileDelete = async (fileId: bigint) => {
     setError(null);
     try {
       const result = await file_management.deleteFile(fileId);
       if ('ok' in result) {
-        await fetchFiles();
-        await fetchStorageUsage();
+        await Promise.all([fetchFiles(), fetchStorageUsage()]);
       } else {
         setError(`Error deleting file: ${result.err}`);
       }
@@ -118,7 +161,7 @@ const FileManagement: React.FC = () => {
       const result = await file_management.downloadFile(fileId);
       if ('ok' in result) {
         const blob = new Blob([new Uint8Array(result.ok)], { type: contentType });
-        const url = window.URL.createObjectURL(blob);
+        const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.style.display = 'none';
         a.href = url;
@@ -126,6 +169,7 @@ const FileManagement: React.FC = () => {
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
       } else {
         setError(`Error downloading file: ${result.err}`);
       }
@@ -135,22 +179,29 @@ const FileManagement: React.FC = () => {
     }
   };
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setDragOver(true);
+  const openInWordEditor = async (fileId: bigint, fileName: string) => {
+    try {
+      const result = await file_management.downloadFile(fileId);
+      if ('ok' in result) {
+        const content = new TextDecoder().decode(new Uint8Array(result.ok));
+        sessionStorage.setItem('wordEditorContent', content);
+        sessionStorage.setItem('wordEditorFileName', fileName);
+        navigate('/word-editor');
+      } else {
+        setError(`Error opening file: ${result.err}`);
+      }
+    } catch (error) {
+      console.error('Error opening file in editor:', error);
+      setError('Failed to open file in editor. Please try again later.');
+    }
   };
 
-  const handleDragLeave = (e: React.DragEvent) => {
+  const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setDragOver(false);
-  };
-
-  const handleDrop = async (e: React.DragEvent) => {
-    e.preventDefault();
-    setDragOver(false);
-    const droppedFiles = Array.from(e.dataTransfer.files);
-    for (const file of droppedFiles) {
-      await handleFileUpload(file);
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      handleFileSelect(file);
     }
   };
 
@@ -174,8 +225,8 @@ const FileManagement: React.FC = () => {
 
       {error && (
         <div className="bg-red-500 text-white p-3 rounded-lg mb-4 flex items-center">
-          <ExclamationCircleIcon className="h-5 w-5 mr-2" />
-          {error}
+          <ExclamationCircleIcon className="h-5 w-5 mr-2 flex-shrink-0" />
+          <span className="text-sm">{error}</span>
         </div>
       )}
 
@@ -184,68 +235,122 @@ const FileManagement: React.FC = () => {
           <div 
             className="bg-yellow-500 h-2.5 rounded-lg transition-all duration-300"
             style={{ width: `${(Number(storageUsage) / Number(MAX_STORAGE)) * 100}%` }}
-          ></div>
+          />
         </div>
         <p className="text-sm text-gray-400">
           Storage used: {(Number(storageUsage) / (1024 * 1024)).toFixed(2)} MB of {MAX_STORAGE / (1024 * 1024)} MB
         </p>
       </div>
 
-      <div 
-        className={`mb-6 border-2 border-dashed rounded-lg p-6 text-center transition-colors duration-300 ${
-          dragOver ? 'border-yellow-500 bg-gray-700' : 'border-gray-600 hover:border-yellow-500'
-        }`}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-      >
-        <label htmlFor="file-upload" className="cursor-pointer">
-          <CloudArrowUpIcon className="h-12 w-12 mx-auto mb-2 text-yellow-500" />
-          <span className="text-white font-medium">
-            Drag and drop files here, or click to select files
-          </span>
-          <p className="text-sm text-gray-400 mt-1">
-            Maximum file size: {MAX_FILE_SIZE / (1024 * 1024)} MB
-          </p>
-        </label>
-        <input
-          id="file-upload"
-          type="file"
-          className="hidden"
-          onChange={(e) => e.target.files && handleFileUpload(e.target.files[0])}
-          disabled={uploadingFile}
-        />
-      </div>
-
-      {uploadingFile && (
-        <div className="mb-4 flex items-center">
-          <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-yellow-500 mr-2"></div>
-          <span className="text-white">Uploading file...</span>
+      {!pendingUpload ? (
+        <div 
+          className={`mb-6 border-2 border-dashed rounded-lg p-6 text-center transition-colors duration-300 ${
+            dragOver ? 'border-yellow-500 bg-gray-700' : 'border-gray-600 hover:border-yellow-500'
+          }`}
+          onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+          onDragLeave={(e) => { e.preventDefault(); setDragOver(false); }}
+          onDrop={handleDrop}
+        >
+          <label htmlFor="file-upload" className="cursor-pointer block">
+            <CloudArrowUpIcon className="h-12 w-12 mx-auto mb-2 text-yellow-500" />
+            <span className="text-white font-medium">
+              Drag and drop files here, or click to select files
+            </span>
+            <p className="text-sm text-gray-400 mt-1">
+              Maximum file size: {MAX_FILE_SIZE / (1024 * 1024)} MB
+            </p>
+          </label>
+          <input
+            id="file-upload"
+            type="file"
+            className="hidden"
+            onChange={(e) => e.target.files && handleFileSelect(e.target.files[0])}
+            disabled={uploadingFile}
+          />
+        </div>
+      ) : (
+        <div className="mb-6 bg-gray-700 rounded-lg p-4">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center space-x-3">
+              <DocumentIcon className="h-8 w-8 text-yellow-500" />
+              <div>
+                <p className="text-white font-medium truncate max-w-md">{pendingUpload.file.name}</p>
+                <p className="text-sm text-gray-400">
+                  {(pendingUpload.size / (1024 * 1024)).toFixed(2)} MB
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={confirmUpload}
+                disabled={!pendingUpload.isValid || uploadingFile}
+                className={`p-2 rounded-lg ${
+                  pendingUpload.isValid && !uploadingFile
+                    ? 'bg-green-500 hover:bg-green-600'
+                    : 'bg-gray-600 cursor-not-allowed'
+                } transition-colors`}
+                title={pendingUpload.isValid ? 'Confirm Upload' : 'Upload not allowed'}
+              >
+                <CheckIcon className="h-5 w-5 text-white" />
+              </button>
+              <button
+                onClick={cancelUpload}
+                disabled={uploadingFile}
+                className="p-2 rounded-lg bg-red-500 hover:bg-red-600 transition-colors disabled:opacity-50"
+                title="Cancel Upload"
+              >
+                <XMarkIcon className="h-5 w-5 text-white" />
+              </button>
+            </div>
+          </div>
+          {pendingUpload.errorMessage && (
+            <div className="text-red-400 text-sm mt-2">{pendingUpload.errorMessage}</div>
+          )}
+          {uploadingFile && (
+            <div className="flex items-center mt-2">
+              <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-yellow-500 mr-2" />
+              <span className="text-white text-sm">Uploading file...</span>
+            </div>
+          )}
         </div>
       )}
 
       <ul className="space-y-2">
         {paginatedFiles.map((file) => (
-          <li key={file.id.toString()} className="flex items-center justify-between bg-gray-700 p-4 rounded-lg hover:bg-gray-600 transition-colors duration-300">
+          <li 
+            key={file.id.toString()} 
+            className="flex items-center justify-between bg-gray-700 p-4 rounded-lg hover:bg-gray-600 transition-colors duration-300"
+          >
             <div className="flex items-center flex-1 min-w-0">
               <DocumentIcon className="h-6 w-6 mr-3 text-yellow-500 flex-shrink-0" />
               <div className="flex-1 min-w-0">
                 <p className="text-white font-medium truncate">{file.name}</p>
-                <p className="text-sm text-gray-400 truncate">
+                <p className="text-sm text-gray-400">
                   {(Number(file.size) / (1024 * 1024)).toFixed(2)} MB
                 </p>
               </div>
             </div>
-            <div className="flex-shrink-0 space-x-2">
+            <div className="flex-shrink-0 flex items-center space-x-2">
+              {WORD_FILE_TYPES.includes(file.contentType) && (
+                <button
+                  onClick={() => openInWordEditor(file.id, file.name)}
+                  className="p-2 rounded-lg bg-blue-500 hover:bg-blue-400 transition-colors"
+                  title="Open in Editor"
+                >
+                  <PencilSquareIcon className="h-5 w-5 text-white" />
+                </button>
+              )}
               <button
-                className="p-2 rounded-lg bg-yellow-500 hover:bg-yellow-400 transition-colors"
                 onClick={() => handleFileDownload(file.id, file.name, file.contentType)}
+                className="p-2 rounded-lg bg-yellow-500 hover:bg-yellow-400 transition-colors"
+                title="Download"
               >
                 <ArrowDownTrayIcon className="h-5 w-5 text-gray-900" />
               </button>
               <button
-                className="p-2 rounded-lg bg-red-500 hover:bg-red-400 transition-colors"
                 onClick={() => handleFileDelete(file.id)}
+                className="p-2 rounded-lg bg-red-500 hover:bg-red-400 transition-colors"
+                title="Delete"
               >
                 <TrashIcon className="h-5 w-5 text-white" />
               </button>
@@ -254,21 +359,30 @@ const FileManagement: React.FC = () => {
         ))}
       </ul>
 
+      {files.length === 0 && !isLoading && (
+        <div className="text-center py-8">
+          <DocumentIcon className="h-12 w-12 text-gray-600 mx-auto mb-3" />
+          <p className="text-gray-400">No files uploaded yet</p>
+        </div>
+      )}
+
       {files.length > ITEMS_PER_PAGE && (
         <div className="flex justify-between items-center mt-6">
           <button
-            className="flex items-center px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 text-white"
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
+            className="flex items-center px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             <ChevronLeftIcon className="h-5 w-5 mr-2" />
             Previous
           </button>
-          <span className="text-white">Page {currentPage} of {totalPages}</span>
+          <span className="text-white">
+            Page {currentPage} of {totalPages}
+          </span>
           <button
-            className="flex items-center px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 text-white"
             onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
             disabled={currentPage === totalPages}
+            className="flex items-center px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             Next
             <ChevronRightIcon className="h-5 w-5 ml-2" />
