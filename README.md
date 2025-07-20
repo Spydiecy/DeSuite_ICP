@@ -2,7 +2,7 @@
 
 ## Your Complete Digital Workspace on the Internet Computer
 
-![DeSuite Banner](https://github.com/user-attachments/assets/465d9e22-2ba8-410c-a7fa-6c3df437b425)
+![Screenshot 2024-12-10 224130](https://github.com/user-attachments/assets/4431fe15-9f6c-401b-a5a0-c63fa501da4d)
 
 > **Secure. Decentralized. Unstoppable.**
 
@@ -24,10 +24,11 @@ DeSuite is a revolutionary decentralized workspace platform built on the Interne
 
 ### Core Features
 
-![Feature Overview](https://github.com/user-attachments/assets/cc736516-ddc8-45fb-b4d5-169fe6f15c07)
+![Screenshot 2024-12-10 224241](https://github.com/user-attachments/assets/951129be-992d-410a-a7d5-190ebd58b331)
 
 #### Document Management
 - **Word Editor**
+  ![Screenshot 2024-12-10 224345](https://github.com/user-attachments/assets/b01601d2-e06c-4dac-ba4a-ffdca1cbac45)
   - Rich text editing with advanced formatting
   - Multiple export formats (DOC, HTML)
   - Real-time autosaving
@@ -35,6 +36,7 @@ DeSuite is a revolutionary decentralized workspace platform built on the Interne
 
 #### File System
 - **Secure Storage**
+  ![Screenshot 2024-12-10 224251](https://github.com/user-attachments/assets/edb4ba6f-10b9-487c-b0b6-e84f62736a2a)
   - End-to-end encryption
   - Version control
   - File sharing capabilities
@@ -42,12 +44,14 @@ DeSuite is a revolutionary decentralized workspace platform built on the Interne
 
 #### Productivity Tools
 - **Notes**
+  ![Screenshot 2024-12-10 224259](https://github.com/user-attachments/assets/02eda588-ca85-4842-94e6-69f15bcb508c)
   - Rich text formatting
   - Organization with tags
   - Quick search functionality
   - Integration with tasks
 
 - **Task Manager**
+  ![Screenshot 2024-12-10 224314](https://github.com/user-attachments/assets/32941256-f5c9-4afa-917d-bf74f7e3e1b1)
   - Task creation and organization
   - Priority settings
   - Due date tracking
@@ -55,6 +59,7 @@ DeSuite is a revolutionary decentralized workspace platform built on the Interne
 
 #### Media Management
 - **Photo Gallery**
+  ![Screenshot 2024-12-10 224307](https://github.com/user-attachments/assets/0b5d2d51-4707-4756-bb97-4f49dbe1df6a)
   - Secure photo storage
   - Album organization
   - Sharing capabilities
@@ -62,12 +67,14 @@ DeSuite is a revolutionary decentralized workspace platform built on the Interne
 
 #### Planning & Finance
 - **Smart Calendar**
+  ![Screenshot 2024-12-10 224323](https://github.com/user-attachments/assets/70ffeb15-9f01-4362-8609-ca26d3dcc08c)
   - Event management
   - Task integration
   - Meeting scheduling
   - Reminder system
 
 - **Expense Tracker**
+  ![Screenshot 2024-12-10 224335](https://github.com/user-attachments/assets/63ae326a-6754-49e0-8987-4cc7e4d75abf)
   - Transaction logging
   - Category management
   - Budget planning
