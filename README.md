@@ -1,28 +1,46 @@
-# DeSuite
+# DeSuite 🚀
 
-## Your Complete Digital Workspace on the Internet Computer
+## 🏆 WCHL Qualification Round 2025 Submission
+### Hack the Future, Build Your Legacy on ICP
+
+## 🌐 Your Complete Decentralized Digital Workspace on the Internet Computer
 
 ![Screenshot 2024-12-10 224130](https://github.com/user-attachments/assets/4431fe15-9f6c-401b-a5a0-c63fa501da4d)
 
-> **Secure. Decentralized. Unstoppable.**
+> **Secure. Decentralized. Unstoppable. Built for Web3.**
 
 ---
 
-### Table of Contents
+## 🏆 WCHL 2025 - Track: Fully On-Chain
+
+DeSuite is our submission for the **WCHL Qualification Round 2025**, competing in the **Fully On-Chain** track. We're pushing the boundaries of what's possible with fully decentralized applications on the Internet Computer.
+
+### 📋 Table of Contents
 1. [Introduction](#introduction)
-2. [Core Features](#core-features)
-3. [Why DeSuite?](#why-desuite)
-4. [Technical Architecture](#technical-architecture)
+2. [Demo Video](#demo-video)
+3. [Core Features](#core-features)
+4. [Why DeSuite?](#why-desuite)
+5. [Technical Architecture](#technical-architecture)
+6. [Getting Started](#getting-started)
+7. [Project Roadmap](#project-roadmap)
+8. [Team](#team)
+9. [License](#license)
 
 ---
 
-### Introduction
+## 🎥 Demo Video
 
-DeSuite is a revolutionary decentralized workspace platform built on the Internet Computer Protocol. It combines essential productivity tools with enterprise-grade security, offering a comprehensive solution for both personal and professional use. By leveraging blockchain technology, DeSuite ensures your data remains private, secure, and accessible anywhere in the world.
+[![DeSuite Demo](https://img.youtube.com/vi/YOUR_VIDEO_ID/0.jpg)](https://youtu.be/YOUR_VIDEO_ID)
+
+## 🚀 Introduction
+
+DeSuite is a revolutionary **fully on-chain** decentralized workspace platform built on the Internet Computer Protocol. As our submission for WCHL 2025, we've created a comprehensive solution that demonstrates the power of building fully decentralized applications on ICP.
+
+In today's digital age, privacy and data ownership are more important than ever. DeSuite addresses these concerns by providing a complete productivity suite where all data is stored and processed directly on the blockchain, ensuring complete transparency, security, and user control.
 
 ---
 
-### Core Features
+## ✨ Core Features Built for Web3
 
 ![Screenshot 2024-12-10 224241](https://github.com/user-attachments/assets/951129be-992d-410a-a7d5-190ebd58b331)
 
@@ -82,7 +100,16 @@ DeSuite is a revolutionary decentralized workspace platform built on the Interne
 
 ---
 
-### Why DeSuite?
+## 🏗️ Why We Built DeSuite for WCHL 2025?
+
+For the WCHL 2025 hackathon, we wanted to demonstrate the full potential of the Internet Computer Protocol by building a complete, fully on-chain productivity suite. DeSuite showcases:
+
+- **True Decentralization**: Every feature runs 100% on-chain
+- **User Sovereignty**: Complete ownership of data and digital assets
+- **Web3-Native Experience**: Built from the ground up for the decentralized web
+- **Interoperability**: Designed to work seamlessly with other Web3 services
+
+### 🛡️ Security & Privacy
 
 #### 🛡️ Uncompromising Security
 - Built on the Internet Computer blockchain
@@ -110,28 +137,69 @@ DeSuite is a revolutionary decentralized workspace platform built on the Interne
 
 ---
 
-### Technical Architecture
+## 🏗️ Technical Architecture
 
-DeSuite leverages cutting-edge technologies to deliver a robust and scalable solution:
+DeSuite is built with a modern, decentralized architecture that leverages the full power of the Internet Computer:
 
-- **Frontend Stack**
-  - React.js with TypeScript
-  - Tailwind CSS for styling
-  - Lucide icons
-  - AOS for animations
+### 🖥️ Frontend Stack
+- **Framework**: React.js with TypeScript
+- **Styling**: Tailwind CSS + Custom Components
+- **State Management**: React Query + Context API
+- **Animations**: Framer Motion + AOS
+- **UI Components**: Headless UI + Custom Design System
 
-- **Backend Infrastructure**
-  - Internet Computer Protocol (ICP)
-  - Motoko smart contracts
-  - Decentralized storage
-  - Internet Identity authentication
+### ⛓️ Backend Infrastructure (100% On-Chain)
+- **Blockchain**: Internet Computer Protocol (ICP)
+- **Smart Contracts**: Motoko canisters for each module
+- **Authentication**: Internet Identity + NFID
+- **Storage**: On-chain storage with asset canisters
+- **Database**: Stable memory + HashMap patterns
 
-- **Key Libraries**
-  - TipTap for document editing
-  - React Big Calendar
-  - Recharts for data visualization
-  - Custom React components
+### 📦 Key Libraries & Tools
+- **Document Editing**: TipTap (ProseMirror)
+- **Data Visualization**: Recharts
+- **Date Management**: date-fns
+- **Form Handling**: React Hook Form
+- **Testing**: Jest + Testing Library
+- **CI/CD**: GitHub Actions
+
+### 🌐 Internet Computer Specifics
+- **Canisters**: Multiple canisters for separation of concerns
+- **Cycles Management**: Efficient cycle usage patterns
+- **Upgradeability**: Careful state management for upgrades
+- **Query/Update Separation**: Optimized for performance
 
 ---
 
-DeSuite - Empowering Your Productivity in a Decentralized World
+## 🛣️ Project Roadmap
+
+### Phase 1: Core Functionality (Current)
+- ✓ Document Management
+- ✓ File Storage
+- ✓ Task Management
+- ✓ Notes System
+- ✓ Photo Gallery
+- ✓ Calendar Integration
+- ✓ Expense Tracking
+
+## 👥 Team
+
+- **Spydiecy** - Full-stack Developer & ICP Enthusiast
+  - GitHub: [@Spydiecy](https://github.com/Spydiecy)
+  - Twitter: [@Spydiecy](https://twitter.com/Spydiecy)
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- The entire ICP community for their support
+- DFINITY Foundation for building the Internet Computer
+- WCHL 2025 organizers for this amazing opportunity
+
+---
+
+DeSuite - Empowering Your Productivity in a Decentralized World 🌍
+
+Built with ❤️ for WCHL 2025
